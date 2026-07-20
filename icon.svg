@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#332a21"/>
+      <stop offset="55%" stop-color="#241d17"/>
+      <stop offset="100%" stop-color="#181310"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="34%" r="62%">
+      <stop offset="0%" stop-color="#4a3a24" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4a3a24" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="tubeBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8a5a2c"/>
+      <stop offset="45%" stop-color="#6b3f22"/>
+      <stop offset="100%" stop-color="#4a2a18"/>
+    </linearGradient>
+    <linearGradient id="tubeRim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c99a3f"/>
+      <stop offset="100%" stop-color="#8a5a2c"/>
+    </linearGradient>
+    <linearGradient id="stick" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0d391"/>
+      <stop offset="100%" stop-color="#c99a3f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" rx="104" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="104" fill="url(#glow)"/>
+
+  <!-- tube body (cup shape, narrower rim, wider base, rounded bottom) -->
+  <path d="M 168,246
+           C 168,236 172,230 256,230
+           C 340,230 344,236 344,246
+           L 336,388
+           C 334,406 300,418 256,418
+           C 212,418 178,406 176,388
+           Z"
+        fill="url(#tubeBody)" stroke="#2c1c10" stroke-width="3"/>
+
+  <!-- bamboo joint texture -->
+  <path d="M 175,300 C 210,308 302,308 337,300" fill="none" stroke="#2c1c10" stroke-width="3" opacity="0.5"/>
+  <path d="M 178,352 C 214,360 298,360 334,352" fill="none" stroke="#2c1c10" stroke-width="3" opacity="0.5"/>
+
+  <!-- dark hollow opening, sits behind the fanned sticks -->
+  <ellipse cx="256" cy="238" rx="84" ry="20" fill="#140d09"/>
+
+  <!-- fanned divination sticks, pivoting near the mouth of the tube -->
+  <g stroke="#2c1c10" stroke-width="1.5">
+    <g transform="translate(220,240) rotate(-24)">
+      <rect x="-6" y="-150" width="12" height="158" rx="5" fill="url(#stick)"/>
+      <rect x="-6" y="-150" width="12" height="20" rx="5" fill="#a34a3c"/>
+    </g>
+    <g transform="translate(234,238) rotate(-13)">
+      <rect x="-6" y="-182" width="12" height="190" rx="5" fill="url(#stick)"/>
+    </g>
+    <g transform="translate(248,236) rotate(-4)">
+      <rect x="-6" y="-206" width="12" height="214" rx="5" fill="url(#stick)"/>
+      <rect x="-6" y="-206" width="12" height="20" rx="5" fill="#a34a3c"/>
+    </g>
+    <g transform="translate(262,236) rotate(5)">
+      <rect x="-6" y="-196" width="12" height="204" rx="5" fill="url(#stick)"/>
+    </g>
+    <g transform="translate(276,238) rotate(14)">
+      <rect x="-6" y="-172" width="12" height="180" rx="5" fill="url(#stick)"/>
+      <rect x="-6" y="-172" width="12" height="20" rx="5" fill="#a34a3c"/>
+    </g>
+    <g transform="translate(290,240) rotate(23)">
+      <rect x="-6" y="-146" width="12" height="154" rx="5" fill="url(#stick)"/>
+    </g>
+  </g>
+
+  <!-- front rim of the tube, drawn over the stick bases so they read as emerging from the opening -->
+  <path d="M 168,246 C 168,236 172,230 256,230 C 340,230 344,236 344,246
+           C 344,256 296,262 256,262 C 216,262 168,256 168,246 Z"
+        fill="url(#tubeRim)" stroke="#2c1c10" stroke-width="3"/>
+  <ellipse cx="256" cy="238" rx="84" ry="18" fill="none" stroke="#2c1c10" stroke-width="2" opacity="0.4"/>
+</svg>

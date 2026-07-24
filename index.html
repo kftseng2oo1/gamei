@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-
-
-
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2b2420">
 <title>易經六十四卦 - 上下卦猜卦名</title>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -257,17 +257,42 @@
     padding: 22px 20px calc(24px + env(safe-area-inset-bottom)) 20px;
     max-height: 78vh;
     overflow-y: auto;
+    --modal-font-scale: 1;
   }
+  .modal-font-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .modal-font-label {
+    font-size: 12px;
+    color: #7d7062;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .font-btn {
+    padding: 6px 14px;
+    background: #2f271f;
+    border: 1px solid #55483a;
+    border-radius: 8px;
+    color: #d9b45c;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .font-btn:active { background: #45392a; }
+  .font-btn:disabled { opacity: 0.35; }
   .modal-num {
     text-align: center;
-    font-size: 12px;
+    font-size: calc(12px * var(--modal-font-scale));
     color: #a89a82;
     letter-spacing: 2px;
     margin-bottom: 4px;
   }
   .modal-title {
     text-align: center;
-    font-size: 24px;
+    font-size: calc(24px * var(--modal-font-scale));
     color: #d9b45c;
     letter-spacing: 3px;
     margin-bottom: 14px;
@@ -283,26 +308,26 @@
   .modal-hex .bar { height: 11px; }
   .modal-trigrams {
     text-align: center;
-    font-size: 14px;
+    font-size: calc(14px * var(--modal-font-scale));
     color: #ece3d3;
     line-height: 1.8;
     margin-bottom: 14px;
   }
   .modal-trigrams b { color: #d9b45c; }
   .modal-guaci-label {
-    font-size: 12px;
+    font-size: calc(12px * var(--modal-font-scale));
     color: #a89a82;
     letter-spacing: 2px;
     margin-bottom: 6px;
   }
   .modal-guaci {
-    font-size: 15px;
+    font-size: calc(15px * var(--modal-font-scale));
     color: #ece3d3;
     line-height: 1.9;
     letter-spacing: 1px;
   }
   .modal-yao-label {
-    font-size: 12px;
+    font-size: calc(12px * var(--modal-font-scale));
     color: #a89a82;
     letter-spacing: 2px;
     margin: 18px 0 6px 0;
@@ -313,7 +338,7 @@
     margin: 0;
   }
   .modal-yao-list li {
-    font-size: 14px;
+    font-size: calc(14px * var(--modal-font-scale));
     color: #ece3d3;
     line-height: 1.7;
     padding: 8px 0;
@@ -324,7 +349,7 @@
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px dashed #55483a;
-    font-size: 14px;
+    font-size: calc(14px * var(--modal-font-scale));
     color: #d9b45c;
   }
   .modal-close {
@@ -340,18 +365,6 @@
     letter-spacing: 2px;
   }
 </style>
-
-<!-- PWA Meta — auto-injected by PWA 打包神器 -->
-<meta name="application-name" content="gamei">
-<meta name="description" content="game for i-chen learning">
-<meta name="theme-color" content="#1a73e8">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="gmaei">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.svg">
-<script>if('serviceWorker'in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').then(function(r){console.log('[SW] registered:',r.scope)}).catch(function(e){console.warn('[SW] failed:',e)});});}</script>
 </head>
 <body>
 <div id="app">
@@ -405,7 +418,12 @@
 </div>
 
 <div class="modal-overlay hidden" id="modalOverlay">
-  <div class="modal-card">
+  <div class="modal-card" id="modalCard">
+    <div class="modal-font-row">
+      <span class="modal-font-label">字體大小</span>
+      <button class="font-btn" id="fontDecBtn" aria-label="縮小字體">A－</button>
+      <button class="font-btn" id="fontIncBtn" aria-label="放大字體">A＋</button>
+    </div>
     <div class="modal-num" id="modalNum"></div>
     <div class="modal-title" id="modalTitle"></div>
     <div class="modal-hex" id="modalHexDisplay"></div>
@@ -900,6 +918,7 @@
 
   // ---- Hexagram detail modal ----
   var modalOverlay = document.getElementById('modalOverlay');
+  var modalCard = document.getElementById('modalCard');
   var modalNum = document.getElementById('modalNum');
   var modalTitle = document.getElementById('modalTitle');
   var modalHexDisplay = document.getElementById('modalHexDisplay');
@@ -907,6 +926,55 @@
   var modalGuaci = document.getElementById('modalGuaci');
   var modalYaoList = document.getElementById('modalYaoList');
   var modalCloseBtn = document.getElementById('modalCloseBtn');
+  var fontDecBtn = document.getElementById('fontDecBtn');
+  var fontIncBtn = document.getElementById('fontIncBtn');
+
+  var FONT_SCALE_KEY = 'yijing_hex_modal_font_scale_v1';
+  var FONT_SCALE_MIN = 0.85;
+  var FONT_SCALE_MAX = 1.7;
+  var FONT_SCALE_STEP = 0.15;
+
+  function loadFontScale() {
+    var raw = null;
+    try {
+      raw = localStorage.getItem(FONT_SCALE_KEY);
+    } catch (e) {
+      raw = null;
+    }
+    var val = raw ? parseFloat(raw) : 1;
+    if (!val || isNaN(val)) { val = 1; }
+    if (val < FONT_SCALE_MIN) { val = FONT_SCALE_MIN; }
+    if (val > FONT_SCALE_MAX) { val = FONT_SCALE_MAX; }
+    return val;
+  }
+
+  function saveFontScale(val) {
+    try {
+      localStorage.setItem(FONT_SCALE_KEY, String(val));
+    } catch (e) {
+      /* ignore storage errors */
+    }
+  }
+
+  var fontScale = loadFontScale();
+
+  function applyFontScale() {
+    modalCard.style.setProperty('--modal-font-scale', String(fontScale));
+    fontDecBtn.disabled = fontScale <= FONT_SCALE_MIN + 0.001;
+    fontIncBtn.disabled = fontScale >= FONT_SCALE_MAX - 0.001;
+  }
+
+  function changeFontScale(delta) {
+    var next = Math.round((fontScale + delta) * 100) / 100;
+    if (next < FONT_SCALE_MIN) { next = FONT_SCALE_MIN; }
+    if (next > FONT_SCALE_MAX) { next = FONT_SCALE_MAX; }
+    fontScale = next;
+    saveFontScale(fontScale);
+    applyFontScale();
+  }
+
+  fontDecBtn.addEventListener('click', function () { changeFontScale(-FONT_SCALE_STEP); });
+  fontIncBtn.addEventListener('click', function () { changeFontScale(FONT_SCALE_STEP); });
 
   function openHexDetail(upperIdx, lowerIdx) {
     var upperName = ORDER[upperIdx];
@@ -916,6 +984,7 @@
     var name = HEX_TABLE[upperIdx][lowerIdx];
     var num = KW_NUM[upperIdx][lowerIdx];
 
+    applyFontScale();
     modalNum.textContent = '第 ' + num + ' 卦';
     modalTitle.textContent = name;
     renderHexagram(modalHexDisplay, upperName, lowerName);

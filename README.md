@@ -1,44 +1,20 @@
-# gamei
+# 易經六十四卦 · 上下卦猜卦名
 
-> game for i-chen learning
+學習六十四卦的測驗遊戲：看卦象（上卦＋下卦）選出正確卦名，附完整六十四卦表。
 
-## 📦 包含檔案
+**線上使用**：https://kftseng2oo1.github.io/gamei/
 
-- `icon-192.png`
-- `icon-512.png`
-- `manifest.json`
-- `sw.js`
-- `index.html`
-- `icon.svg`
-- `icon-maskable.svg`
-- `offline.html`
+## 主要功能
+- **測驗模式**：隨機出卦，四選一猜卦名
+  - 初級：一般選項
+  - 進階：干擾選項用相近的上下卦組合，更難分辨
+- 答題統計（可重設）
+- **六十四卦表**：依上下卦排列，點擊看單卦詳細說明（八卦象徵：天、澤、火、雷、風、水、山、地）
+- A－／A＋ 調整字級，適合長輩使用
 
-## 🚀 部署到 GitHub Pages
+## 技術與依賴
+- 單檔 HTML PWA（`index.html` 內含全部 HTML/CSS/JS），`manifest.json` + `sw.js` 提供安裝到主畫面與離線快取。
+- 純前端；統計與字級存在 localStorage
 
-```bash
-git init
-git add .
-git commit -m "init: gamei PWA"
-git branch -M main
-git remote add origin https://github.com/<username>/<repo>.git
-git push -u origin main
-```
-
-然後在 GitHub repo → **Settings → Pages** → Source 選 `main` 分支，等待幾分鐘後即可訪問。
-
-## 📱 安裝 PWA
-
-在支援的瀏覽器（Chrome / Edge / Safari iOS）中打開網頁，  
-點擊「**安裝**」或「**加入主畫面**」即可將此 App 安裝到裝置。
-
-## ⚙ 技術規格
-
-| 項目 | 值 |
-|------|-----|
-| display | standalone |
-| theme_color | #1a73e8 |
-| lang | zh-TW |
-| scope | /gamei/ |
-
----
-*由 [PWA 打包神器](https://github.com) 自動生成*
+## 相關 repo
+- [HG](https://github.com/kftseng2oo1/HG)：六十四卦圖形產生器
